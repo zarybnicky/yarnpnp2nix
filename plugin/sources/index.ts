@@ -1,3 +1,4 @@
+import process from 'process';
 import {Plugin} from '@yarnpkg/core';
 import {BaseCommand} from '@yarnpkg/cli';
 import {Option} from 'clipanion';
@@ -420,6 +421,10 @@ class RunBuildScriptsCommand extends BaseCommand {
 export default {
   hooks: {
     afterAllInstalled: async (project, opts) => {
+      if (process.env.CI) {
+        return;
+      }
+
       const linkers = project.configuration.getLinkers();
       const linkerOptions = {project, report: null};
 
